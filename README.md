@@ -18,6 +18,7 @@
 - **Geocoding (`geocode_address`)**: Resolves landmarks or cities into precise latitude and longitude coordinates using Google Maps Geocoding API.
 - **Nearby Places Search (`find_nearby_places`)**: Finds nearby points of interest (restaurants, cafes, museums, parks) via Google Places API (New).
 - **Timezone Clock (`get_current_time`)**: Returns timezone-aware local time for requested destinations.
+- **Chat History Sidebar & Session Management**: Built-in collapsible sidebar (`📜 Chat History`) with session title auto-generation, switching between past travel sessions, deleting old chats, and exporting chat itineraries as Markdown files (`smart-travel-itinerary.md`).
 - **Document Attachment & Analysis (`parse_travel_document`)**: Parses and analyzes user-attached travel documents (itineraries, vouchers, travel notes).
 - **Expedia Travel Connector (`expedia_travel_connector`)**: Queries Expedia Partner Network API for live flight deals, hotel availability, and vacation bundle discounts.
 - **Gmail Itinerary Connector (`gmail_itinerary_connector`)**: Searches connected Gmail inbox for flight confirmations, hotel vouchers, and e-tickets.
