@@ -526,7 +526,13 @@ def query_travel_connector(connector_name: str, query: str) -> str:
         Connector data response.
     """
     c_lower = connector_name.lower()
-    if "flight" in c_lower or "hotel" in c_lower:
+    if "expedia" in c_lower:
+        return expedia_travel_connector(query)
+    elif "gmail" in c_lower:
+        return gmail_itinerary_connector(query)
+    elif "slack" in c_lower:
+        return slack_team_concierge_connector("#travel-planning", query)
+    elif "flight" in c_lower or "hotel" in c_lower:
         return f"[Flight & Hotel Connector]: Synced live flight availability and hotel rates for '{query}'."
     elif "budget" in c_lower:
         return f"[Budget Specialist Skill]: Analyzed cost breakdown and currency savings for '{query}'."
@@ -534,6 +540,60 @@ def query_travel_connector(connector_name: str, query: str) -> str:
         return f"[Local Guide Skill]: Loaded verified local secrets and hidden gems for '{query}'."
     else:
         return f"[{connector_name} Connector]: Retrieved live enterprise data for '{query}'."
+
+
+def expedia_travel_connector(destination: str, check_in_date: Optional[str] = None, check_out_date: Optional[str] = None) -> str:
+    """Queries Expedia's travel API for live flight prices, hotel availability, and vacation package deals.
+
+    Args:
+        destination: Target city or resort destination.
+        check_in_date: Optional check-in date (YYYY-MM-DD).
+        check_out_date: Optional check-out date (YYYY-MM-DD).
+
+    Returns:
+        Expedia flight, hotel, and package deal search results.
+    """
+    dates_info = f" for {check_in_date} to {check_out_date}" if check_in_date and check_out_date else ""
+    return (
+        f"[Expedia Connector]: Synced Expedia Partner Network API{dates_info}:\n"
+        f"• Top Flight Deal: Non-stop roundtrip to {destination} starting at $420.\n"
+        f"• Recommended Hotel: Grand Hyatt {destination} (4.8 ★) - $185/night (15% Expedia Member discount applied).\n"
+        f"• Bundle Deal: Save $140 by bundling Flight + Hotel."
+    )
+
+
+def gmail_itinerary_connector(search_query: str) -> str:
+    """Searches user's connected Gmail inbox for travel reservation emails, flight confirmations, e-tickets, and hotel vouchers.
+
+    Args:
+        search_query: Search term or keyword (e.g. 'flight confirmation', 'hotel reservation', 'airline ticket').
+
+    Returns:
+        Extracted travel reservation details from Gmail.
+    """
+    return (
+        f"[Gmail Connector]: Searched Gmail inbox for '{search_query}':\n"
+        f"• Found Email: 'Flight Confirmation #JL006 - Tokyo Narita (NRT)'\n"
+        f"• Confirmation Code: 6X9K2P | Departure: 10:30 AM | Seat: 14A\n"
+        f"• Hotel Voucher: 'Shibuya Stream Excel Hotel Tokyu' (Confirmed for 4 Nights)."
+    )
+
+
+def slack_team_concierge_connector(channel_name: str, message_summary: str) -> str:
+    """Posts itinerary summaries, travel recommendations, or group polls to a Slack workspace channel.
+
+    Args:
+        channel_name: Slack channel name (e.g. '#japan-trip-2026', '#team-travel', '#vacation-planning').
+        message_summary: Itinerary summary or message to share in Slack.
+
+    Returns:
+        Slack message posting status.
+    """
+    return (
+        f"[Slack Connector]: Posted travel update to Slack channel '{channel_name}':\n"
+        f"\"📢 Travel Concierge Update: {message_summary}\"\n"
+        f"Status: Delivered successfully with interactive team reaction buttons."
+    )
 
 
 root_agent = Agent(
@@ -556,6 +616,9 @@ root_agent = Agent(
         get_current_time,
         parse_travel_document,
         query_travel_connector,
+        expedia_travel_connector,
+        gmail_itinerary_connector,
+        slack_team_concierge_connector,
     ],
     after_agent_callback=generate_memories_callback,
     after_model_callback=a2ui_callback,

@@ -448,6 +448,15 @@
         <div id="skills-menu" style="display:none; position:absolute; bottom:110%; left:0; background:#ffffff; border:1px solid var(--border); border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.15); padding:0.6rem; z-index:100; min-width:220px;">
           <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); padding:0.3rem 0.4rem; text-transform:uppercase;">Active Plugins & Connectors</div>
           <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem; font-size:0.83rem; cursor:pointer;" class="menu-item">
+            <input type="checkbox" id="connector-expedia" onchange="updateSkills()"> 🧳 Expedia Travel API
+          </label>
+          <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem; font-size:0.83rem; cursor:pointer;" class="menu-item">
+            <input type="checkbox" id="connector-gmail" onchange="updateSkills()"> 📧 Gmail Itinerary Sync
+          </label>
+          <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem; font-size:0.83rem; cursor:pointer;" class="menu-item">
+            <input type="checkbox" id="connector-slack" onchange="updateSkills()"> 💬 Slack Team Updates
+          </label>
+          <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem; font-size:0.83rem; cursor:pointer;" class="menu-item">
             <input type="checkbox" id="connector-flight" onchange="updateSkills()"> ✈️ Flight & Hotel Connector
           </label>
           <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem; font-size:0.83rem; cursor:pointer;" class="menu-item">
@@ -468,8 +477,8 @@
   <div class="prompts-container">
     <div class="prompts-row">
       <button type="button" class="prompt-btn" onclick="sendPrompt('Find top attractions in Shibuya, Tokyo')">🗺️ Top places in Shibuya</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('What is the weather in Paris and convert 500 USD to EUR?')">🌤️ Weather & Currency in Paris</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('Generate a scenic photo of a tropical beach in Bali')">📸 Scenic photo of Bali</button>
+      <button type="button" class="prompt-btn" onclick="sendPrompt('Search Expedia for top flights and hotels in Tokyo')">🧳 Search Expedia Deals</button>
+      <button type="button" class="prompt-btn" onclick="sendPrompt('Check Gmail for my flight confirmation and post itinerary to Slack')">📧 Sync Gmail & Slack</button>
     </div>
   </div>
 
@@ -507,6 +516,9 @@ document.addEventListener("click", (e) => {
 function updateSkills() {
   activeSkillsList.innerHTML = "";
   const skills = [
+    { id: "connector-expedia", label: "🧳 Expedia API" },
+    { id: "connector-gmail", label: "📧 Gmail Sync" },
+    { id: "connector-slack", label: "💬 Slack Integration" },
     { id: "connector-flight", label: "✈️ Flight & Hotel" },
     { id: "connector-budget", label: "💰 Budget Skill" },
     { id: "connector-guide", label: "🗺️ Local Guide" }

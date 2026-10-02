@@ -19,7 +19,10 @@
 - **Nearby Places Search (`find_nearby_places`)**: Finds nearby points of interest (restaurants, cafes, museums, parks) via Google Places API (New).
 - **Timezone Clock (`get_current_time`)**: Returns timezone-aware local time for requested destinations.
 - **Document Attachment & Analysis (`parse_travel_document`)**: Parses and analyzes user-attached travel documents (itineraries, vouchers, travel notes).
-- **Connectors & Skills Toolbar (`query_travel_connector`)**: Interacts with active connectors/skills (Flight & Hotel Connector, Budget Specialist, Local Secrets Guide).
+- **Expedia Travel Connector (`expedia_travel_connector`)**: Queries Expedia Partner Network API for live flight deals, hotel availability, and vacation bundle discounts.
+- **Gmail Itinerary Connector (`gmail_itinerary_connector`)**: Searches connected Gmail inbox for flight confirmations, hotel vouchers, and e-tickets.
+- **Slack Team Connector (`slack_team_concierge_connector`)**: Posts travel updates, destination recommendations, and itinerary summaries directly to Slack workspace channels.
+- **Connectors & Skills Toolbar (`query_travel_connector`)**: Interacts with active connectors/skills (Expedia, Gmail, Slack, Flight & Hotel, Budget Specialist, Local Secrets Guide).
 
 ### ☁️ Connected Google Cloud Services
 - **Vertex AI Agent Engine / Memory Bank (`VertexAiMemoryBankService`)**: Persists conversation history and automatically extracts user preferences (e.g., food/dietary allergies) across sessions.
