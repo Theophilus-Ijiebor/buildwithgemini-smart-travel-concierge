@@ -527,6 +527,39 @@
   .a2divider { border: none; border-top: 1px solid var(--border); margin: 0.6rem 0; width: 100%; }
   .a2img { max-width: 100%; border-radius: 12px; display: block; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
   .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-size: 1.25rem; line-height: 1; vertical-align: middle; color: var(--accent); }
+  body.dark-mode {
+    --bg-page: #0f172a;
+    --bg-surface: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --border: #334155;
+  }
+  body.dark-mode .msg.agent .bubble,
+  body.dark-mode .a2card,
+  body.dark-mode .history-item,
+  body.dark-mode #skills-menu,
+  body.dark-mode .prompts-container,
+  body.dark-mode .toolbar-container,
+  body.dark-mode form {
+    background: #1e293b !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+  }
+  body.dark-mode .history-sidebar {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+  }
+  body.dark-mode input {
+    background: #0f172a !important;
+    color: #f8fafc !important;
+    border-color: #334155 !important;
+  }
+  body.dark-mode .prompt-btn {
+    background: #0f172a !important;
+    color: #cbd5e1 !important;
+    border-color: #334155 !important;
+  }
 </style>
 </head>
 <body>
@@ -541,6 +574,7 @@
       </div>
     </div>
     <div class="header-actions">
+      <button type="button" class="header-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
       <button type="button" class="header-btn" onclick="toggleSidebar()">📜 Chat History</button>
       <button type="button" class="header-btn" onclick="createNewSession()">➕ New Chat</button>
       <button type="button" class="header-btn" onclick="exportChatHistory()">📥 Export</button>
@@ -604,7 +638,9 @@
 
       <div class="prompts-container">
         <div class="prompts-row">
-          <button type="button" class="prompt-btn" onclick="sendPrompt('Find top attractions in Shibuya, Tokyo')">🗺️ Top places in Shibuya</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('Optimize a 7-day multi-city trip to Tokyo, Kyoto, and Osaka with a $2,500 budget')">🗺️ Multi-City Optimizer</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('Check safety advisory, visa policy, and health rules for Japan')">🛡️ Visa & Safety Advisory</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('Calculate group budget split for $3,200 total cost among 4 travelers')">💰 Group Cost Splitter</button>
           <button type="button" class="prompt-btn" onclick="sendPrompt('Search Expedia for top flights and hotels in Tokyo')">🧳 Search Expedia Deals</button>
           <button type="button" class="prompt-btn" onclick="sendPrompt('Check Gmail for my flight confirmation and post itinerary to Slack')">📧 Sync Gmail & Slack</button>
         </div>
@@ -614,6 +650,7 @@
         <div class="input-wrapper">
           <input id="input" placeholder="Ask about destinations, weather, currency, or itinerary..." autocomplete="off" autofocus>
         </div>
+        <button type="button" id="mic-btn" style="border:1px solid var(--border); background:var(--bg-page); color:var(--accent); font-size:1.15rem; padding:0.75rem 0.95rem; border-radius:24px; cursor:pointer; transition:all 0.2s;" title="Voice Assistant Speech-to-Text" onclick="toggleVoiceInput()">🎙️</button>
         <button class="send-btn">
           <span>Send</span>
           <span style="font-size: 1.1rem;">›</span>
@@ -636,6 +673,61 @@ const historyList = document.getElementById("history-list");
 let attachedFile = null;
 let sessions = [];
 let currentSessionId = null;
+
+let recognition = null;
+let isListening = false;
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+}
+
+function toggleVoiceInput() {
+  const micBtn = document.getElementById("mic-btn");
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert("Speech-to-text is not supported in this browser environment. Please type your query.");
+    return;
+  }
+  if (isListening && recognition) {
+    recognition.stop();
+    isListening = false;
+    micBtn.style.background = "var(--bg-page)";
+    micBtn.style.color = "var(--accent)";
+    return;
+  }
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = "en-US";
+
+  recognition.onstart = () => {
+    isListening = true;
+    micBtn.style.background = "#ef4444";
+    micBtn.style.color = "#ffffff";
+  };
+
+  recognition.onresult = (event) => {
+    let transcript = "";
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      transcript += event.results[i][0].transcript;
+    }
+    input.value = transcript;
+  };
+
+  recognition.onerror = () => {
+    isListening = false;
+    micBtn.style.background = "var(--bg-page)";
+    micBtn.style.color = "var(--accent)";
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    micBtn.style.background = "var(--bg-page)";
+    micBtn.style.color = "var(--accent)";
+  };
+
+  recognition.start();
+}
 
 // --- Chat History Storage & Session Management ---
 

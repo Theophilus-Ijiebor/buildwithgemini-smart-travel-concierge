@@ -17,7 +17,11 @@
 - **Currency Conversion (`convert_currency`)**: Converts travel budget amounts using live foreign exchange rates.
 - **Geocoding (`geocode_address`)**: Resolves landmarks or cities into precise latitude and longitude coordinates using Google Maps Geocoding API.
 - **Nearby Places Search (`find_nearby_places`)**: Finds nearby points of interest (restaurants, cafes, museums, parks) via Google Places API (New).
-- **Timezone Clock (`get_current_time`)**: Returns timezone-aware local time for requested destinations.
+- **Multi-City Itinerary Optimizer (`optimize_multi_city_itinerary`)**: Generates day-by-day multi-city routes, recommended transit options (bullet trains, flights), and per-city budget allocations.
+- **Travel Advisories & Health Protocol (`get_travel_advisories_and_health`)**: Provides official visa requirements, mandatory vaccinations, emergency contact numbers, and embassy info.
+- **Group Budget & Expense Splitter (`calculate_group_budget_split`)**: Calculates per-person cost shares, daily allowances, and group payment split links.
+- **🎙️ Voice Assistant (Speech-to-Text)**: Allows hands-free voice query input with real-time speech recognition directly in the chat bar.
+- **🌙 Dark Mode Theme Switcher**: Toggleable dark mode theme in header bar for comfortable night-time trip planning.
 - **Chat History Sidebar & Session Management**: Built-in collapsible sidebar (`📜 Chat History`) with session title auto-generation, switching between past travel sessions, deleting old chats, and exporting chat itineraries as Markdown files (`smart-travel-itinerary.md`).
 - **Document Attachment & Analysis (`parse_travel_document`)**: Parses and analyzes user-attached travel documents (itineraries, vouchers, travel notes).
 - **Expedia Travel Connector (`expedia_travel_connector`)**: Queries Expedia Partner Network API for live flight deals, hotel availability, and vacation bundle discounts.

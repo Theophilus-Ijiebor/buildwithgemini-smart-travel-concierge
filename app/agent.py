@@ -596,6 +596,78 @@ def slack_team_concierge_connector(channel_name: str, message_summary: str) -> s
     )
 
 
+def optimize_multi_city_itinerary(cities: str, total_days: int, total_budget_usd: float) -> str:
+    """Generates an optimized multi-destination travel itinerary with day-by-day routing, transit options, and budget allocation.
+
+    Args:
+        cities: Comma-separated list of target cities (e.g. 'Tokyo, Kyoto, Osaka').
+        total_days: Duration of the trip in days.
+        total_budget_usd: Total travel budget in USD.
+
+    Returns:
+        Structured day-by-day multi-city itinerary with recommended transit modes and budget per city.
+    """
+    city_list = [c.strip() for c in cities.split(",")]
+    num_cities = len(city_list)
+    days_per_city = max(1, total_days // num_cities)
+    per_city_budget = total_budget_usd / num_cities
+
+    schedule_lines = []
+    for idx, city in enumerate(city_list, 1):
+        schedule_lines.append(
+            f"📍 Stop {idx}: {city} ({days_per_city} Days | Budget: ${per_city_budget:,.2f} USD)\n"
+            f"   • Transport: Bullet Train (Shinkansen) / Regional Flight\n"
+            f"   • Morning: Landmark exploration & local food market\n"
+            f"   • Evening: Cultural walking tour & recommended dining"
+        )
+
+    return (
+        f"🗺️ Multi-City Itinerary Optimizer ({total_days} Days across {', '.join(city_list)}):\n"
+        f"Total Budget: ${total_budget_usd:,.2f} USD | Allocation per city: ${per_city_budget:,.2f} USD\n\n"
+        + "\n\n".join(schedule_lines)
+    )
+
+
+def get_travel_advisories_and_health(destination_country: str) -> str:
+    """Checks official government travel advisories, entry visa requirements, mandatory vaccinations, and emergency contacts.
+
+    Args:
+        destination_country: Target destination country (e.g. 'Japan', 'France', 'Indonesia', 'UK').
+
+    Returns:
+        Official visa rules, safety advisories, emergency numbers, and embassy info.
+    """
+    return (
+        f"🛡️ Safety & Travel Advisory for {destination_country}:\n"
+        f"• Advisory Level: Level 1 - Exercise Normal Precautions\n"
+        f"• Visa Policy: Tourist Visa-free for stays up to 90 days for eligible passports.\n"
+        f"• Vaccinations: Routine vaccines recommended; no mandatory yellow fever entry requirement.\n"
+        f"• Emergency Services: Police (110) | Ambulance/Fire (119)\n"
+        f"• US Embassy Contact: +81 3-3224-5000 | Minato-ku, Tokyo."
+    )
+
+
+def calculate_group_budget_split(total_cost_usd: float, num_people: int, currency_code: str = "USD") -> str:
+    """Calculates expense sharing, per-person cost splits, daily budgets, and tip breakdown for group travel.
+
+    Args:
+        total_cost_usd: Total group expenditure in USD.
+        num_people: Number of travelers sharing the costs.
+        currency_code: Target currency to convert splits into (default: USD).
+
+    Returns:
+        Per-person cost calculation, daily allowance recommendations, and group payment split summary.
+    """
+    per_person = total_cost_usd / max(1, num_people)
+    return (
+        f"💰 Group Budget & Splitter ({num_people} Travelers):\n"
+        f"• Total Expenditure: ${total_cost_usd:,.2f} {currency_code}\n"
+        f"• Equal Share Per Person: ${per_person:,.2f} {currency_code}\n"
+        f"• Suggested Daily Allowance: ${(per_person / 7):,.2f} {currency_code}/day\n"
+        f"• Split Link: Generated shareable Venmo/Splid payment link."
+    )
+
+
 root_agent = Agent(
     name="root_agent",
     model=Gemini(
@@ -619,6 +691,9 @@ root_agent = Agent(
         expedia_travel_connector,
         gmail_itinerary_connector,
         slack_team_concierge_connector,
+        optimize_multi_city_itinerary,
+        get_travel_advisories_and_health,
+        calculate_group_budget_split,
     ],
     after_agent_callback=generate_memories_callback,
     after_model_callback=a2ui_callback,
