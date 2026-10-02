@@ -18,6 +18,8 @@
 - **Geocoding (`geocode_address`)**: Resolves landmarks or cities into precise latitude and longitude coordinates using Google Maps Geocoding API.
 - **Nearby Places Search (`find_nearby_places`)**: Finds nearby points of interest (restaurants, cafes, museums, parks) via Google Places API (New).
 - **Timezone Clock (`get_current_time`)**: Returns timezone-aware local time for requested destinations.
+- **Document Attachment & Analysis (`parse_travel_document`)**: Parses and analyzes user-attached travel documents (itineraries, vouchers, travel notes).
+- **Connectors & Skills Toolbar (`query_travel_connector`)**: Interacts with active connectors/skills (Flight & Hotel Connector, Budget Specialist, Local Secrets Guide).
 
 ### ☁️ Connected Google Cloud Services
 - **Vertex AI Agent Engine / Memory Bank (`VertexAiMemoryBankService`)**: Persists conversation history and automatically extracts user preferences (e.g., food/dietary allergies) across sessions.

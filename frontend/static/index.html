@@ -1,72 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Travel Concierge</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Travel Concierge - AI Destination Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <style>
   :root {
     --accent: #0d9488;
     --accent-dark: #0f766e;
-    --accent-light: #e6fffa;
-    --gradient-accent: linear-gradient(135deg, #0d9488 0%, #0284c7 100%);
+    --accent-light: #ccfbf1;
+    --gradient-accent: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
     --bg-page: #f8fafc;
-    --bg-card: #ffffff;
-    --border: #e2e8f0;
+    --bg-surface: #ffffff;
     --text-primary: #0f172a;
     --text-secondary: #475569;
     --text-muted: #94a3b8;
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.03);
-    --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
-    --shadow-glow: 0 4px 14px rgba(13, 148, 136, 0.25);
+    --border: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 25px -5px rgba(13, 148, 136, 0.1);
+    --shadow-glow: 0 0 20px rgba(13, 148, 136, 0.25);
   }
 
-  * { box-sizing: border-box; }
-  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    margin: 0;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background: var(--bg-page);
-    background-image: radial-gradient(at 0% 0%, rgba(13, 148, 136, 0.05) 0px, transparent 50%),
-                      radial-gradient(at 100% 100%, rgba(2, 132, 199, 0.05) 0px, transparent 50%);
     color: var(--text-primary);
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
   }
 
   .app-container {
     width: 100%;
-    max-width: 860px;
-    height: 100vh;
+    max-width: 900px;
+    height: 92vh;
+    background: var(--bg-surface);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.08), 0 0 1px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
-    background: var(--bg-card);
-    box-shadow: var(--shadow-md);
-  }
-
-  @media (min-width: 768px) {
-    .app-container {
-      height: 92vh;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
+    overflow: hidden;
+    border: 1px solid rgba(226, 232, 240, 0.8);
   }
 
   header {
     background: var(--gradient-accent);
-    color: #fff;
+    color: #ffffff;
     padding: 1.1rem 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.2);
   }
 
   .header-brand {
@@ -84,19 +74,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.3);
+    font-size: 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 
   .header-info h1 {
-    margin: 0;
     font-size: 1.15rem;
     font-weight: 700;
     letter-spacing: -0.01em;
   }
 
   .header-info p {
-    margin: 0.15rem 0 0;
     font-size: 0.8rem;
     opacity: 0.9;
     font-weight: 500;
@@ -229,11 +217,85 @@
     40% { transform: scale(1.1); opacity: 1; }
   }
 
-  /* --- Example Prompts Row --- */
-  .prompts-container {
-    padding: 0.75rem 1.25rem 0.25rem;
+  /* --- Attachments & Connectors Bar --- */
+  .toolbar-container {
+    padding: 0.6rem 1.25rem 0.3rem;
     background: #ffffff;
     border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .attach-btn, .skill-btn {
+    border: 1px dashed var(--accent);
+    background: var(--accent-light);
+    color: var(--accent-dark);
+    padding: 0.45rem 0.85rem;
+    border-radius: 18px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.2s ease;
+  }
+
+  .attach-btn:hover, .skill-btn:hover {
+    background: var(--accent);
+    color: #ffffff;
+    border-style: solid;
+  }
+
+  .skill-badge {
+    background: rgba(13, 148, 136, 0.12);
+    color: var(--accent-dark);
+    border: 1px solid rgba(13, 148, 136, 0.25);
+    padding: 0.25rem 0.65rem;
+    border-radius: 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .attachment-chip {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+    padding: 0.3rem 0.75rem;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.3rem 1.25rem 0;
+  }
+
+  .remove-chip {
+    cursor: pointer;
+    font-weight: bold;
+    opacity: 0.75;
+  }
+  .remove-chip:hover { opacity: 1; color: #ef4444; }
+
+  /* --- Example Prompts Row --- */
+  .prompts-container {
+    padding: 0.4rem 1.25rem 0.25rem;
+    background: #ffffff;
   }
 
   .prompts-row {
@@ -274,7 +336,7 @@
   form {
     display: flex;
     gap: 0.6rem;
-    padding: 0.85rem 1.25rem 1.1rem;
+    padding: 0.6rem 1.25rem 1.1rem;
     background: #ffffff;
     align-items: center;
   }
@@ -327,10 +389,6 @@
     transform: translateY(-1px);
   }
 
-  button.send-btn:active {
-    transform: translateY(0);
-  }
-
   /* --- A2UI component styles --- */
   .a2card {
     border: 1px solid var(--border);
@@ -375,6 +433,38 @@
 
   <div id="log"></div>
 
+  <!-- Attachments & Connectors Toolbar -->
+  <div class="toolbar-container">
+    <div class="toolbar-group">
+      <button type="button" class="attach-btn" onclick="document.getElementById('file-input').click()">
+        📎 Attach Document
+      </button>
+      <input type="file" id="file-input" style="display:none" accept=".txt,.pdf,.md,.json,.csv" onchange="handleFileSelect(event)">
+      
+      <div style="position:relative; display:inline-block;">
+        <button type="button" class="skill-btn" onclick="toggleSkillsMenu()">
+          🧩 Connectors & Skills ▾
+        </button>
+        <div id="skills-menu" style="display:none; position:absolute; bottom:110%; left:0; background:#ffffff; border:1px solid var(--border); border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.15); padding:0.6rem; z-index:100; min-width:220px;">
+          <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); padding:0.3rem 0.4rem; text-transform:uppercase;">Active Plugins & Connectors</div>
+          <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem; font-size:0.83rem; cursor:pointer;" class="menu-item">
+            <input type="checkbox" id="connector-flight" onchange="updateSkills()"> ✈️ Flight & Hotel Connector
+          </label>
+          <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem; font-size:0.83rem; cursor:pointer;" class="menu-item">
+            <input type="checkbox" id="connector-budget" onchange="updateSkills()"> 💰 Budget Specialist Skill
+          </label>
+          <label style="display:flex; align-items:center; gap:0.5rem; padding:0.4rem; font-size:0.83rem; cursor:pointer;" class="menu-item">
+            <input type="checkbox" id="connector-guide" onchange="updateSkills()"> 🗺️ Local Secrets Skill
+          </label>
+        </div>
+      </div>
+    </div>
+    <div id="active-skills-list" class="toolbar-group"></div>
+  </div>
+
+  <!-- Attachment preview tag -->
+  <div id="attachment-preview"></div>
+
   <div class="prompts-container">
     <div class="prompts-row">
       <button type="button" class="prompt-btn" onclick="sendPrompt('Find top attractions in Shibuya, Tokyo')">🗺️ Top places in Shibuya</button>
@@ -398,6 +488,65 @@
 const log = document.getElementById("log");
 const form = document.getElementById("form");
 const input = document.getElementById("input");
+const skillsMenu = document.getElementById("skills-menu");
+const activeSkillsList = document.getElementById("active-skills-list");
+const attachmentPreview = document.getElementById("attachment-preview");
+
+let attachedFile = null; // { name: string, content: string }
+
+function toggleSkillsMenu() {
+  skillsMenu.style.display = skillsMenu.style.display === "none" ? "block" : "none";
+}
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".skill-btn") && !e.target.closest("#skills-menu")) {
+    skillsMenu.style.display = "none";
+  }
+});
+
+function updateSkills() {
+  activeSkillsList.innerHTML = "";
+  const skills = [
+    { id: "connector-flight", label: "✈️ Flight & Hotel" },
+    { id: "connector-budget", label: "💰 Budget Skill" },
+    { id: "connector-guide", label: "🗺️ Local Guide" }
+  ];
+  skills.forEach(s => {
+    const cb = document.getElementById(s.id);
+    if (cb && cb.checked) {
+      const badge = el("div", "skill-badge", s.label);
+      const rm = el("span", "remove-chip", " ✕");
+      rm.onclick = () => { cb.checked = false; updateSkills(); };
+      badge.appendChild(rm);
+      activeSkillsList.appendChild(badge);
+    }
+  });
+}
+
+function handleFileSelect(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    attachedFile = { name: file.name, content: e.target.result };
+    renderAttachmentPreview();
+  };
+  reader.readAsText(file);
+}
+
+function renderAttachmentPreview() {
+  attachmentPreview.innerHTML = "";
+  if (!attachedFile) return;
+  const chip = el("div", "attachment-chip", `📄 ${attachedFile.name} (${attachedFile.content.length} chars)`);
+  const rm = el("span", "remove-chip", " ✕");
+  rm.onclick = () => {
+    attachedFile = null;
+    document.getElementById("file-input").value = "";
+    renderAttachmentPreview();
+  };
+  chip.appendChild(rm);
+  attachmentPreview.appendChild(chip);
+}
 
 function sendPrompt(text) {
   input.value = text;
@@ -449,32 +598,26 @@ function buildNode(id, comps, seen) {
   const kids = () => childIds(props).map(cid => buildNode(cid, comps, seen)).filter(Boolean);
 
   switch (type) {
-    case "Card": {
-      const d = el("div", "a2card"); kids().forEach(n => d.appendChild(n)); return d;
-    }
-    case "Column":
-    case "List": {
-      const horizontal = type === "List" && props.direction === "horizontal";
-      const d = el("div", horizontal ? "a2row" : "a2col"); kids().forEach(n => d.appendChild(n)); return d;
-    }
+    case "Card": { const d = el("div", "a2card"); kids().forEach(k => d.appendChild(k)); return d; }
+    case "Column": { const d = el("div", "a2col"); kids().forEach(k => d.appendChild(k)); return d; }
     case "Row": {
-      const d = el("div", "a2row" + (props.distribution === "spaceBetween" ? " between" : ""));
-      kids().forEach(n => d.appendChild(n)); return d;
+      const d = el("div", "a2row");
+      if (boundStr(props.distribution) === "space-between") d.classList.add("between");
+      kids().forEach(k => d.appendChild(k));
+      return d;
     }
     case "Text": {
-      const t = el("div", "a2text");
-      const hint = String(props.usageHint || "body").toLowerCase();
-      if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(hint)) t.classList.add("a2-" + hint);
-      else if (hint === "caption") t.classList.add("a2-caption");
-      t.textContent = boundStr(props.text);
-      return t;
+      const t = boundStr(props.text);
+      const style = boundStr(props.usage);
+      const cls = "a2text " + (style ? "a2-" + style.toLowerCase() : "");
+      return el("div", cls, t);
     }
-    case "Divider":
-      return el("hr", "a2divider");
+    case "Divider": return el("hr", "a2divider");
     case "Image": {
-      const src = boundStr(props.url || props.src);
-      if (!/^https?:\/\//i.test(src)) return null;
-      const img = el("img", "a2img"); img.src = src; img.alt = boundStr(props.alt) || ""; return img;
+      const img = el("img", "a2img");
+      img.src = boundStr(props.url);
+      img.alt = boundStr(props.alt) || "image";
+      return img;
     }
     case "Icon": {
       const s = el("span", "material-symbols-outlined"); s.textContent = iconName(boundStr(props.name) || props.name); return s;
@@ -530,14 +673,40 @@ function renderReply(b, parts) {
 
 form.addEventListener("submit", async (ev) => {
   ev.preventDefault();
-  const text = input.value.trim();
-  if (!text) return;
-  bubble("user").textContent = text;
+  const rawText = input.value.trim();
+  if (!rawText && !attachedFile) return;
+
+  // Active connectors
+  const activeConnectors = [];
+  if (document.getElementById("connector-flight").checked) activeConnectors.push("Flight & Hotel Connector");
+  if (document.getElementById("connector-budget").checked) activeConnectors.push("Budget Specialist Skill");
+  if (document.getElementById("connector-guide").checked) activeConnectors.push("Local Secrets Skill");
+
+  // Construct message payload sent to Agent
+  let finalPrompt = rawText;
+  let userDisplay = rawText;
+
+  if (attachedFile) {
+    finalPrompt = `[ATTACHED DOCUMENT: ${attachedFile.name}]\n${attachedFile.content}\n\n[USER QUERY]\n${rawText || "Please analyze the attached travel document."}`;
+    userDisplay = `📎 Attached Document: ${attachedFile.name}\n${rawText}`;
+  }
+
+  if (activeConnectors.length > 0) {
+    finalPrompt = `[ACTIVE CONNECTORS/SKILLS: ${activeConnectors.join(", ")}]\n${finalPrompt}`;
+  }
+
+  bubble("user").textContent = userDisplay;
   input.value = "";
+  
+  // Reset attached file preview
+  attachedFile = null;
+  document.getElementById("file-input").value = "";
+  renderAttachmentPreview();
+
   const b = bubble("agent");
   b.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
   try {
-    const res = await fetch("/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text }) });
+    const res = await fetch("/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: finalPrompt }) });
     const raw = await res.text();
     let data;
     try { data = JSON.parse(raw); }

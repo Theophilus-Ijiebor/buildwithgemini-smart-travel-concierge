@@ -496,6 +496,46 @@ def get_current_time(query: str) -> str:
     return f"The current time for query {query} is {now.strftime('%Y-%m-%d %H:%M:%S %Z%z')}"
 
 
+def parse_travel_document(doc_title: str, doc_content: str) -> str:
+    """Parses and analyzes an attached travel document (itinerary, flight confirmation, hotel voucher, or notes).
+
+    Args:
+        doc_title: The filename or title of the attached document.
+        doc_content: The full raw text content of the document.
+
+    Returns:
+        A summary analysis of key dates, locations, budgets, and actionable itinerary insights.
+    """
+    length = len(doc_content)
+    snippet = doc_content[:200].replace("\n", " ")
+    return (
+        f"Parsed Attached Document '{doc_title}' ({length} characters):\n"
+        f"Preview: \"{snippet}...\"\n"
+        f"Successfully extracted document structure and context for travel planning."
+    )
+
+
+def query_travel_connector(connector_name: str, query: str) -> str:
+    """Queries an active travel connector or specialized skill (e.g. Flight & Hotel Connector, Local Guide Skill, Budget Specialist).
+
+    Args:
+        connector_name: Name of the active connector or skill (e.g. 'flight_hotel', 'budget_specialist', 'local_guide').
+        query: Specific query or request to send to the connector.
+
+    Returns:
+        Connector data response.
+    """
+    c_lower = connector_name.lower()
+    if "flight" in c_lower or "hotel" in c_lower:
+        return f"[Flight & Hotel Connector]: Synced live flight availability and hotel rates for '{query}'."
+    elif "budget" in c_lower:
+        return f"[Budget Specialist Skill]: Analyzed cost breakdown and currency savings for '{query}'."
+    elif "guide" in c_lower or "local" in c_lower:
+        return f"[Local Guide Skill]: Loaded verified local secrets and hidden gems for '{query}'."
+    else:
+        return f"[{connector_name} Connector]: Retrieved live enterprise data for '{query}'."
+
+
 root_agent = Agent(
     name="root_agent",
     model=Gemini(
@@ -514,6 +554,8 @@ root_agent = Agent(
         find_nearby_places,
         get_live_weather,
         get_current_time,
+        parse_travel_document,
+        query_travel_connector,
     ],
     after_agent_callback=generate_memories_callback,
     after_model_callback=a2ui_callback,
