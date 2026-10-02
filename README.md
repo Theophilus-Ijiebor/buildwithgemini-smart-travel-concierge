@@ -17,6 +17,9 @@
 - **Currency Conversion (`convert_currency`)**: Converts travel budget amounts using live foreign exchange rates.
 - **Geocoding (`geocode_address`)**: Resolves landmarks or cities into precise latitude and longitude coordinates using Google Maps Geocoding API.
 - **Nearby Places Search (`find_nearby_places`)**: Finds nearby points of interest (restaurants, cafes, museums, parks) via Google Places API (New).
+- **✋ Raise Hand & Human Concierge Escalation**: Header and inline message button (`✋ Raise Hand`) that triggers immediate high-priority escalation to live human travel concierges for urgent booking assistance.
+- **😀 Interactive Emoji Picker**: Integrated emoji dropdown menu (`✈️`, `🏖️`, `🍣`, `⛩️`, `🏨`, `👍`, `❤️`, `🔥`) for quick emoji insertions into chat queries.
+- **👍 Message Emoji Reactions**: Interactive reaction toolbar (`👍`, `❤️`, `✈️`, `🔥`, `✋`) attached to every agent response.
 - **Multi-City Itinerary Optimizer (`optimize_multi_city_itinerary`)**: Generates day-by-day multi-city routes, recommended transit options (bullet trains, flights), and per-city budget allocations.
 - **Travel Advisories & Health Protocol (`get_travel_advisories_and_health`)**: Provides official visa requirements, mandatory vaccinations, emergency contact numbers, and embassy info.
 - **Group Budget & Expense Splitter (`calculate_group_budget_split`)**: Calculates per-person cost shares, daily allowances, and group payment split links.

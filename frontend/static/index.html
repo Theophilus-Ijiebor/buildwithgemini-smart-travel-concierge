@@ -560,6 +560,63 @@
     color: #cbd5e1 !important;
     border-color: #334155 !important;
   }
+
+  /* --- Emoji Picker & Reactions Bar --- */
+  .reaction-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.45rem;
+    flex-wrap: wrap;
+  }
+
+  .react-pill {
+    border: 1px solid var(--border);
+    background: var(--bg-page);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.6rem;
+    border-radius: 14px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: all 0.2s ease;
+  }
+
+  .react-pill:hover, .react-pill.reacted {
+    background: var(--accent-light);
+    color: var(--accent-dark);
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+
+  .emoji-picker-dropdown {
+    position: absolute;
+    bottom: 120%;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    padding: 0.6rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.4rem;
+    z-index: 200;
+    min-width: 200px;
+  }
+
+  .emoji-item {
+    font-size: 1.25rem;
+    padding: 0.35rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s;
+  }
+  .emoji-item:hover { background: var(--accent-light); }
 </style>
 </head>
 <body>
@@ -574,6 +631,7 @@
       </div>
     </div>
     <div class="header-actions">
+      <button type="button" class="header-btn" style="background:rgba(239,68,68,0.25); border-color:rgba(239,68,68,0.5);" onclick="raiseHand()">✋ Raise Hand</button>
       <button type="button" class="header-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
       <button type="button" class="header-btn" onclick="toggleSidebar()">📜 Chat History</button>
       <button type="button" class="header-btn" onclick="createNewSession()">➕ New Chat</button>
@@ -650,6 +708,34 @@
         <div class="input-wrapper">
           <input id="input" placeholder="Ask about destinations, weather, currency, or itinerary..." autocomplete="off" autofocus>
         </div>
+
+        <!-- Emoji Picker Dropdown Trigger -->
+        <div style="position:relative; display:inline-block;">
+          <button type="button" id="emoji-btn" style="border:1px solid var(--border); background:var(--bg-page); font-size:1.15rem; padding:0.75rem 0.95rem; border-radius:24px; cursor:pointer; transition:all 0.2s;" title="Insert Emoji" onclick="toggleEmojiPicker()">😀</button>
+          <div id="emoji-picker" class="emoji-picker-dropdown" style="display:none;">
+            <span class="emoji-item" onclick="insertEmoji('✈️')">✈️</span>
+            <span class="emoji-item" onclick="insertEmoji('🏖️')">🏖️</span>
+            <span class="emoji-item" onclick="insertEmoji('🗺️')">🗺️</span>
+            <span class="emoji-item" onclick="insertEmoji('🍣')">🍣</span>
+            <span class="emoji-item" onclick="insertEmoji('⛩️')">⛩️</span>
+            <span class="emoji-item" onclick="insertEmoji('🏨')">🏨</span>
+            <span class="emoji-item" onclick="insertEmoji('👍')">👍</span>
+            <span class="emoji-item" onclick="insertEmoji('❤️')">❤️</span>
+            <span class="emoji-item" onclick="insertEmoji('🔥')">🔥</span>
+            <span class="emoji-item" onclick="insertEmoji('🎉')">🎉</span>
+            <span class="emoji-item" onclick="insertEmoji('⭐')">⭐</span>
+            <span class="emoji-item" onclick="insertEmoji('💡')">💡</span>
+            <span class="emoji-item" onclick="insertEmoji('🙌')">🙌</span>
+            <span class="emoji-item" onclick="insertEmoji('✋')">✋</span>
+            <span class="emoji-item" onclick="insertEmoji('🌴')">🌴</span>
+            <span class="emoji-item" onclick="insertEmoji('🚄')">🚄</span>
+            <span class="emoji-item" onclick="insertEmoji('🗼')">🗼</span>
+            <span class="emoji-item" onclick="insertEmoji('🍱')">🍱</span>
+            <span class="emoji-item" onclick="insertEmoji('📸')">📸</span>
+            <span class="emoji-item" onclick="insertEmoji('💰')">💰</span>
+          </div>
+        </div>
+
         <button type="button" id="mic-btn" style="border:1px solid var(--border); background:var(--bg-page); color:var(--accent); font-size:1.15rem; padding:0.75rem 0.95rem; border-radius:24px; cursor:pointer; transition:all 0.2s;" title="Voice Assistant Speech-to-Text" onclick="toggleVoiceInput()">🎙️</button>
         <button class="send-btn">
           <span>Send</span>
@@ -1024,6 +1110,70 @@ function flattenText(messages) {
   return out.join("\n").trim();
 }
 
+function toggleEmojiPicker() {
+  const picker = document.getElementById("emoji-picker");
+  picker.style.display = picker.style.display === "none" ? "grid" : "none";
+}
+
+function insertEmoji(emoji) {
+  input.value += emoji;
+  input.focus();
+  document.getElementById("emoji-picker").style.display = "none";
+}
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#emoji-btn") && !e.target.closest("#emoji-picker")) {
+    const p = document.getElementById("emoji-picker");
+    if (p) p.style.display = "none";
+  }
+});
+
+function raiseHand() {
+  const cur = getCurrentSession();
+  const alertMsg = "✋ [HAND RAISED]: Requesting Live Human Concierge Intervention for active itinerary!";
+  cur.messages.push({ who: "user", text: alertMsg });
+  saveSessions();
+
+  bubble("user").textContent = alertMsg;
+
+  const b = bubble("agent");
+  b.innerHTML = `
+    <div style="background:#fef2f2; border:1px solid #fca5a5; padding:1rem; border-radius:14px; color:#991b1b;">
+      <div style="font-weight:700; font-size:1rem; display:flex; align-items:center; gap:0.4rem;">✋ Live Human Concierge Escalation</div>
+      <div style="font-size:0.88rem; margin-top:0.4rem; line-height:1.5;">
+        Your request has been flagged with high priority. A senior human travel agent concierge has been notified and will assist you with booking & custom itinerary modifications.
+      </div>
+    </div>
+  `;
+  appendReactions(b);
+  cur.messages.push({ who: "agent", parts: [{ text: "✋ Live Human Concierge Escalation: Senior concierge agent notified." }] });
+  saveSessions();
+}
+
+function addReaction(btn) {
+  btn.classList.toggle("reacted");
+  const span = btn.querySelector("span");
+  if (span) {
+    let count = parseInt(span.textContent || "0");
+    count = btn.classList.contains("reacted") ? count + 1 : Math.max(0, count - 1);
+    span.textContent = count;
+  }
+}
+
+function appendReactions(bubbleEl) {
+  const parent = bubbleEl.parentNode;
+  if (!parent || parent.querySelector(".reaction-bar")) return;
+  const bar = el("div", "reaction-bar");
+  bar.innerHTML = `
+    <button type="button" class="react-pill" onclick="addReaction(this)">👍 <span>0</span></button>
+    <button type="button" class="react-pill" onclick="addReaction(this)">❤️ <span>0</span></button>
+    <button type="button" class="react-pill" onclick="addReaction(this)">✈️ <span>0</span></button>
+    <button type="button" class="react-pill" onclick="addReaction(this)">🔥 <span>0</span></button>
+    <button type="button" class="react-pill" style="border-color:#fca5a5; color:#dc2626;" onclick="raiseHand()">✋ Raise Hand</button>
+  `;
+  parent.appendChild(bar);
+}
+
 function renderReply(b, parts) {
   b.textContent = "";
   const texts = parts.filter(p => p && (p.kind === "text" || (!p.kind && p.text))).map(p => p.text || "");
@@ -1037,6 +1187,8 @@ function renderReply(b, parts) {
     if (!renderSurface(a2ui, b)) b.appendChild(el("div", null, flattenText(a2ui) || "(no card content)"));
   }
   if (!b.childNodes.length) b.textContent = "(no response)";
+
+  appendReactions(b);
   log.scrollTop = log.scrollHeight;
 }
 
