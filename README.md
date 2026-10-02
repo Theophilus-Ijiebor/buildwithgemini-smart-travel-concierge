@@ -17,6 +17,7 @@
 - **Currency Conversion (`convert_currency`)**: Converts travel budget amounts using live foreign exchange rates.
 - **Geocoding (`geocode_address`)**: Resolves landmarks or cities into precise latitude and longitude coordinates using Google Maps Geocoding API.
 - **Nearby Places Search (`find_nearby_places`)**: Finds nearby points of interest (restaurants, cafes, museums, parks) via Google Places API (New).
+- **🤖 Dynamic AI Model Engine Switcher**: UI Header dropdown selector allows switching between **Gemini 2.5 Flash** (default high-speed), **Gemini 2.5 Pro** (deep reasoning), **Gemini 1.5 Flash** (ultra lightweight), and **Gemini 1.5 Pro** (long context).
 - **✋ Raise Hand & Human Concierge Escalation**: Header and inline message button (`✋ Raise Hand`) that triggers immediate high-priority escalation to live human travel concierges for urgent booking assistance.
 - **😀 Interactive Emoji Picker**: Integrated emoji dropdown menu (`✈️`, `🏖️`, `🍣`, `⛩️`, `🏨`, `👍`, `❤️`, `🔥`) for quick emoji insertions into chat queries.
 - **👍 Message Emoji Reactions**: Interactive reaction toolbar (`👍`, `❤️`, `✈️`, `🔥`, `✋`) attached to every agent response.

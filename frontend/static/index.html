@@ -608,15 +608,20 @@
     min-width: 200px;
   }
 
-  .emoji-item {
-    font-size: 1.25rem;
-    padding: 0.35rem;
-    border-radius: 8px;
+  .model-option {
+    padding: 0.45rem 0.6rem;
+    border-radius: 10px;
     cursor: pointer;
-    text-align: center;
     transition: background 0.15s;
+    margin-top: 0.2rem;
   }
-  .emoji-item:hover { background: var(--accent-light); }
+  .model-option:hover {
+    background: var(--accent-light);
+  }
+  .model-option.active {
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+  }
 </style>
 </head>
 <body>
@@ -631,6 +636,32 @@
       </div>
     </div>
     <div class="header-actions">
+      <!-- AI Model Selector Dropdown -->
+      <div style="position:relative; display:inline-block;">
+        <button type="button" class="header-btn" id="model-select-btn" onclick="toggleModelMenu()">
+          🤖 Gemini 2.5 Flash ▾
+        </button>
+        <div id="model-menu" style="display:none; position:absolute; top:120%; right:0; background:#ffffff; border:1px solid var(--border); border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.18); padding:0.5rem; z-index:300; min-width:250px; color:var(--text-primary);">
+          <div style="font-size:0.75rem; font-weight:700; color:var(--text-muted); padding:0.3rem 0.5rem; text-transform:uppercase;">Select AI Engine Model</div>
+          <div class="model-option active" id="opt-gemini-2.5-flash" onclick="selectModel('gemini-2.5-flash', '🤖 Gemini 2.5 Flash')">
+            <div style="font-weight:600; font-size:0.85rem; color:var(--text-primary);">⚡ Gemini 2.5 Flash (Default)</div>
+            <div style="font-size:0.73rem; color:var(--text-muted);">High speed & structured tool calls</div>
+          </div>
+          <div class="model-option" id="opt-gemini-2.5-pro" onclick="selectModel('gemini-2.5-pro', '🧠 Gemini 2.5 Pro')">
+            <div style="font-weight:600; font-size:0.85rem; color:var(--text-primary);">🧠 Gemini 2.5 Pro</div>
+            <div style="font-size:0.73rem; color:var(--text-muted);">Deep reasoning & complex multi-city planning</div>
+          </div>
+          <div class="model-option" id="opt-gemini-1.5-flash" onclick="selectModel('gemini-1.5-flash', '⚡ Gemini 1.5 Flash')">
+            <div style="font-weight:600; font-size:0.85rem; color:var(--text-primary);">⚡ Gemini 1.5 Flash</div>
+            <div style="font-size:0.73rem; color:var(--text-muted);">Lightweight & quick response</div>
+          </div>
+          <div class="model-option" id="opt-gemini-1.5-pro" onclick="selectModel('gemini-1.5-pro', '📚 Gemini 1.5 Pro')">
+            <div style="font-weight:600; font-size:0.85rem; color:var(--text-primary);">📚 Gemini 1.5 Pro</div>
+            <div style="font-size:0.73rem; color:var(--text-muted);">Long-context document analysis</div>
+          </div>
+        </div>
+      </div>
+
       <button type="button" class="header-btn" style="background:rgba(239,68,68,0.25); border-color:rgba(239,68,68,0.5);" onclick="raiseHand()">✋ Raise Hand</button>
       <button type="button" class="header-btn" onclick="toggleDarkMode()">🌙 Dark Mode</button>
       <button type="button" class="header-btn" onclick="toggleSidebar()">📜 Chat History</button>
@@ -759,6 +790,29 @@ const historyList = document.getElementById("history-list");
 let attachedFile = null;
 let sessions = [];
 let currentSessionId = null;
+
+let selectedModel = "gemini-2.5-flash";
+
+function toggleModelMenu() {
+  const m = document.getElementById("model-menu");
+  m.style.display = m.style.display === "none" ? "block" : "none";
+}
+
+function selectModel(modelKey, label) {
+  selectedModel = modelKey;
+  document.getElementById("model-select-btn").textContent = label + " ▾";
+  document.querySelectorAll(".model-option").forEach(opt => opt.classList.remove("active"));
+  const activeOpt = document.getElementById("opt-" + modelKey);
+  if (activeOpt) activeOpt.classList.add("active");
+  document.getElementById("model-menu").style.display = "none";
+}
+
+document.addEventListener("click", (e) => {
+  if (!e.target.closest("#model-select-btn") && !e.target.closest("#model-menu")) {
+    const m = document.getElementById("model-menu");
+    if (m) m.style.display = "none";
+  }
+});
 
 let recognition = null;
 let isListening = false;
@@ -1211,6 +1265,10 @@ form.addEventListener("submit", async (ev) => {
   if (attachedFile) {
     finalPrompt = `[ATTACHED DOCUMENT: ${attachedFile.name}]\n${attachedFile.content}\n\n[USER QUERY]\n${rawText || "Please analyze the attached travel document."}`;
     userDisplay = `📎 Attached Document: ${attachedFile.name}\n${rawText}`;
+  }
+
+  if (selectedModel) {
+    finalPrompt = `[ACTIVE MODEL ENGINE: ${selectedModel}]\n${finalPrompt}`;
   }
 
   if (activeConnectors.length > 0) {
